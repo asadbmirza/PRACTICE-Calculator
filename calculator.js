@@ -1,5 +1,7 @@
 const frame = document.querySelector("#frame");
 const screen = document.querySelector('#screen');
+const numbers = ['1','2','3','4','5','6','7','8','9','0', '.'];
+const keys = ['/', '+', '=', '*', '%', '-'];
 
 function addButtons() {
     const id = {
@@ -35,28 +37,39 @@ function addButtons() {
 addButtons();
 
 function inputNumbers(e) {
+    let input = undefined;
+    if (e.type == "click") {
+        input = e.target.textContent;
+    }
+    else if (numbers.includes(e.key)) {
+        input = e.key;
+    }
+    if (input == undefined) return;    
     if (clearDisplay || screen.textContent == '0') {
         if (equalsPressed == true) {
             inputOne = undefined;
             storedNumber = undefined;
         }
-        if (e.target.textContent == '.') {
+        if (input == '.') {
             screen.textContent = '0.';
+            decimalPresent = true;
         }
         else {
-            screen.textContent = e.target.textContent;
+            screen.textContent = input;
         }
         clearDisplay = false;
     }
     else if (screen.textContent.length < 15) {
-        if (!decimalPresent || e.target.textContent != ".") {
-            screen.textContent += e.target.textContent;
+        if (!decimalPresent || input != ".") {
+            screen.textContent += input;
         }
-        if (e.target.textContent == ".") {
+        if (input == ".") {
             decimalPresent = true;
         }
     }
 }
+
+
 
 function isPressed(e) {
     if (e.target.classList.item(1) == 'AC') {
@@ -69,7 +82,7 @@ function isPressed(e) {
         redBtn.style.backgroundColor = '#da1313';
     }
     if (e.target.classList.item(1) == 'green_btn') {
-        redBtn.style.opacity = "#850a0a";
+        redBtn.style.backgroundColor = "#850a0a";
         greenBtns.forEach(function (greenBtn) {
             greenBtn.style.backgroundColor = "#3c6400";
         });
@@ -164,10 +177,14 @@ function clear(e) {
 //Handles the input of numbers and decimals
 const nums = document.querySelectorAll(".num");
 let decimalPresent = false;
+
+window.addEventListener('keydown', inputNumbers);
 nums.forEach(function (num) {
-    num.addEventListener('click', inputNumbers);
     num.addEventListener('click', isPressed);
+    num.addEventListener('click', inputNumbers);
+    
 });
+
 
 //Handles the input of operators
 //For handling display clears and keeping track of operations
