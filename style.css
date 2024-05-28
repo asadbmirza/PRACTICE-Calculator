@@ -51,7 +51,11 @@ body {
 }
 
 .green_btn {
-    background-color: rgb(60, 100, 0);
+    background-color: #3c6400;
+}
+
+.AC {
+    background-color: #850a0a;
 }
 
 #footer {
